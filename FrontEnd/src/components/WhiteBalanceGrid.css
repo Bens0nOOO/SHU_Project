@@ -1,0 +1,88 @@
+
+.wb-panel {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  background-color: #E4F650;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.wb-section {
+  margin-bottom: 20px;
+}
+
+.wb-section h3 {
+  font-size: 18px;
+  margin-bottom: 10px;
+  border-bottom: 1px solid #000;
+  text-align: center; /* ✅ 置中文字 */
+}
+
+.wb-slider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 5px 0;
+}
+
+.wb-slider label {
+  width: 80px;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.wb-slider input[type="range"] {
+  flex: 1;
+}
+
+.wb-slider span {
+  width: 30px;
+  text-align: right;
+  font-size: 12px;
+}
+
+.wb-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.wb-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.confirm-btn,
+.cancel-btn {
+  padding: 8px 16px;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+}
+
+.confirm-btn {
+  background-color: #333;
+  color: #fff;
+}
+
+.cancel-btn {
+  background-color: #eee;
+  color: #000;
+}
+
+.checkbox-group {
+  display: flex;
+  gap: 10px;
+  margin: 0 10px;
+}
+
+.number-input {
+  width: 40px;
+  margin-left: 6px;
+  font-size: 12px;
+  text-align: right;
+}

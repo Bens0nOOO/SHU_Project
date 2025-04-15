@@ -1,0 +1,431 @@
+/* 移除整體外框白邊 */
+body, html, .main-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  background-color: transparent;
+}
+
+/* Header - 置中排列 */
+.header {
+  position: fixed;
+  top: 0;
+  left: 0; /* 加上這行！ */
+  width: 100%; /* 確保寬度撐滿 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+  background-color: transparent;
+  z-index: 10;
+  gap: 3vw;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  will-change: opacity, transform;
+}
+
+.header.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.header.hide {
+  opacity: 0;
+  transform: translateY(-100%);
+}
+
+.header button {
+  background: none;
+  border: none;
+  color: black;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.header button:hover {
+  background-color: #28a745; /* ✅ 綠色 */
+  color: white;
+  text-decoration: none;
+}
+
+/* 調整粉色圓圈帳號按鈕位置*/ 
+.acc-btn {
+  position: fixed;
+  top: 20px;
+  right: 70px;
+  width: 60px;
+  height: 60px;
+  background-color: #f6a9b5; /* 粉色 */
+  border-radius: 50%; /* 圓形 */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10002;
+  cursor: pointer;
+  font-weight: bold;
+  user-select: none;
+} 
+
+/* 區塊共用 */
+.section {
+  min-height: 100vh;
+  padding-top: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* 第一區塊 */
+/* 第一區塊靠左排版 */
+.section1 {
+  background-color: #fde046;
+  justify-content: center;
+}
+
+.section1-main {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 5vw;
+  padding-left: 5vw;
+  transform: translateY(-10%);
+  margin-right: 100px;
+
+}
+
+.section1-content {
+  background-color: #f6a9b5;
+  border-radius: 20px;
+  width: 50%;
+  padding: 50px 30px;
+  text-align: left;
+}
+
+.section1-content h1 {
+  font-size: 2rem;
+  margin-top: 0px;
+  /* margin-bottom: 20px; */
+  color: white;
+}
+
+.section1-content p {
+  font-size: 1rem;
+  color: white;
+  line-height: 1.6;
+}
+
+.section1-buttons {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 30%;
+  padding: 0;
+  align-items: stretch;
+  margin-left: 100px;
+  /* cursor: pointer; */
+
+}
+
+.section1-buttons button {
+  background-color: white;
+  color: black;
+  border-radius: 20px;
+  border: none;
+  padding: 15px;
+  margin: 10px 0;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  cursor: pointer;
+}
+
+.section1-buttons button:hover {
+  background-color: #28a745;
+  color: white;
+}
+
+/* 第二區塊 */
+.section2 {
+  background-color: white;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding-top: 120px;
+  padding-left: 5%;
+  padding-right: 5%;
+}
+
+.section2::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  height: 80px;
+  width: 100%;
+  background-color: #f6a9b5;
+  z-index: -1;
+}
+
+.card {
+  border-radius: 20px;
+  padding: 20px;
+  margin: 30px 0;
+  color: white;
+}
+
+.card h3 {
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+.card p {
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.link-text {
+  display: inline-block;
+  margin-top: 10px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* 左側對齊卡片 */
+.red, .green {
+  width: 60%;
+  margin-right: auto;
+}
+
+.red {
+  background-color: #f64c2f;
+}
+
+.green {
+  background-color: #70c7b0;
+}
+
+/* 右側對齊卡片 */
+.blue {
+  background-color: #597cff;
+  width: 60%;
+  margin-left: auto;
+}
+
+/* 第三區塊 */
+.section3 {
+  background-color: #f6a9b5;
+  padding-top: 100px;
+  padding-bottom: 60px;
+}
+
+.section3 h2 {
+  font-size: 2rem;
+  color: white;
+  margin-bottom: 40px;
+}
+
+/* 修改為上2下3排版 */
+.team-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+}
+
+.team-grid-row {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.team-card {
+  background-color: #fde046;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  width: 200px;
+}
+
+.team-card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.team-card ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 10px 0;
+}
+
+.team-card ul li {
+  font-size: 0.9rem;
+  margin-bottom: 3px;
+}
+
+.team-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* 淡入淡出滑動動畫樣式 */
+.animated-slide {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all 0.6s ease-out;
+}
+
+.animated-slide.in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animated-slide.out {
+  opacity: 0;
+  transform: translateX(-50px);
+}
+/* 淡入淡出向右滑動動畫樣式 */
+.animated-slide-right {
+  opacity: 0;
+  transform: translateX(50px);
+  transition: all 0.6s ease-out;
+}
+
+.animated-slide-right.in {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animated-slide-right.out {
+  opacity: 0;
+  transform: translateX(50px);
+}
+/* 從上往下淡入 */
+.animated-slide-top {
+  opacity: 0;
+  transform: translateY(-50px);
+  transition: all 0.6s ease-out;
+}
+.animated-slide-top.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.animated-slide-top.out {
+  opacity: 0;
+  transform: translateY(-50px);
+}
+
+/* 從下往上淡入 */
+.animated-slide-bottom {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all 0.6s ease-out;
+}
+.animated-slide-bottom.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+.animated-slide-bottom.out {
+  opacity: 0;
+  transform: translateY(50px);
+}
+
+/* RWD 響應式設計：手機版適配 */
+@media screen and (max-width: 768px) {
+  .header {
+    justify-content: space-around;
+    padding: 10px 0;
+    gap: 2vw;
+    flex-wrap: wrap;
+  }
+
+  .header button {
+    font-size: 1rem;
+  }
+
+  .account-btn {
+    width: 50px;
+    height: 50px;
+    font-size: 0.9rem;
+    top: 10px;
+    right: 10px;
+  }
+
+  .section1-main {
+    flex-direction: column;
+    align-items: center;
+    gap: 30px;
+    padding: 0 20px;
+    margin-right: 0;
+  }
+
+  .section1-content,
+  .section1-buttons {
+    width: 100%;
+    margin: 0;
+  }
+
+  .section1-content {
+    text-align: center;
+  }
+
+  .section1-buttons button {
+    font-size: 0.9rem;
+  }
+
+  .section2 {
+    padding-left: 20px;
+    padding-right: 20px;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    padding: 20px;
+  }
+
+  .team-grid-row {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .team-card {
+    width: 80%;
+  }
+
+  .section3 h2 {
+    font-size: 1.5rem;
+    text-align: center;
+  }
+
+  .team-card h3 {
+    font-size: 1rem;
+  }
+
+  .team-card ul li {
+    font-size: 0.85rem;
+  }
+
+  .section1-content h1 {
+    font-size: 1.5rem;
+  }
+
+  .section1-content p {
+    font-size: 0.9rem;
+  }
+
+  .acc-btn {
+    display: none !important;
+  }
+}

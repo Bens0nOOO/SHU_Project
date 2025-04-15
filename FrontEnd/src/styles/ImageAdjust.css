@@ -1,0 +1,158 @@
+.image-adjust-outer {
+  min-height: 100vh;
+  background-color: #f9cce1;
+  overflow-y: auto;
+  position: relative;
+}
+
+.image-main-wrapper {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.image-upload-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-box-wrapper {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+
+.image-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.image-box .label {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.upload-box {
+  width: 300px;
+  min-height: 300px;
+  border: 2px dashed #aaa;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: #555;
+  margin: 10px 0;
+  border-radius: 10px;
+  position: relative;
+}
+
+.preview-box {
+  width: 300px;
+  height: 300px;
+}
+
+.preview-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+  user-select: none;
+}
+
+.button-group {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  background-color: #357ab7;
+}
+
+/* ========== 右側白平衡面板 ========== */
+.white-balance-wrapper {
+  position: absolute;
+  top: 60px;
+  right: 0;
+  height: calc(100% - 60px);
+  transition: width 0.3s ease-in-out;
+  z-index: 10;
+}
+
+.white-balance-wrapper.open {
+  width: 350px;
+  min-width: 350px;
+}
+
+.white-balance-wrapper.closed {
+  width: 35px;
+  min-width: 35px;
+}
+
+.white-balance-panel {
+  background-color: #e5f441;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  border-radius: 10px 0 0 10px;
+  padding: 20px 10px;
+}
+
+.toggle-arrow {
+  position: absolute;
+  top: 50%;
+  left: -18px;
+  transform: rotate(180deg); /* ⬅️ 旋轉箭頭方向 */
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background-color: #333;
+  color: white;
+  z-index: 99;
+  cursor: pointer;
+}
+
+.white-balance-wrapper.closed .toggle-arrow {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* RWD */
+@media (max-width: 768px) {
+  .image-main-wrapper {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .white-balance-wrapper {
+    position: static;
+    width: 100%;
+    height: auto;
+  }
+
+  .toggle-arrow {
+    top: 10px;
+    left: auto;
+    right: 10px;
+    transform: none;
+  }
+}
