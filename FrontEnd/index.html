@@ -1,6 +1,28 @@
 <!doctype html>
 <html lang="en">
+  
   <head>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '{9312022405573228}',
+          cookie     : true,
+          xfbml      : true,
+          version    : '{d5f5a7f679d26b0fb46f2a996f0a336c}'
+        });
+          
+        FB.AppEvents.logPageView();   
+          
+      };
+    
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+    </script>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />

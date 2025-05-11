@@ -56,7 +56,9 @@ const LoginForm = ({ onSubmit }) => {
       <button type="button" className="btn-back" onClick={() => navigate('/')}>
         返回
       </button>
+
     </form>
+
   );
 };
 
