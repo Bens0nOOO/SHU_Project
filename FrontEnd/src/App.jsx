@@ -1,9 +1,7 @@
-// src/App.jsx
 import React, { useRef, useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import './App.css';
 import { loginWithSocial } from "./utils/loginWithSocial";
-
 
 const useAnimateOnScroll = (ref, setInView) => {
   useEffect(() => {
@@ -19,30 +17,53 @@ const useAnimateOnScroll = (ref, setInView) => {
 const App = () => {
   const navigate = useNavigate();
 
-  const scrollTo = (id) => {
-    const section = document.getElementById(id);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
+  const teamData = [
+    {
+      name: "陳振洲",
+      img: "/images/teamPeople/chen.jpg",
+      details: ["功能設計", "API整合", "影像上傳", "圖片切換", "修復功能", "專案負責人"]
+    },
+    {
+      name: "林品君",
+      img: "/images/teamPeople/lin.jpg",
+      details: ["圖片調整", "網頁設計", "Firebase登入", "圖片輪播", "功能介紹", "CSS設計"]
+    },
+    {
+      name: "卓晏霆",
+      img: "/images/teamPeople/zhou.png",
+      details: ["資料庫設計", "後端建構", "使用者管理", "登入驗證", "API維護", "資料分析"]
+    },
+    {
+      name: "郭旻憲",
+      img: "/images/teamPeople/kuo.jpg",
+      details: ["前端整合", "動畫效果", "畫面對齊", "元件拆分", "網頁測試", "圖片美化"]
+    },
+    {
+      name: "葉鎮宇",
+      img: "/images/teamPeople/yeh.jpg",
+      details: ["圖片儲存", "AI模型研究", "修復展示", "模型推理", "修補預覽", "成效評估"]
     }
-  };
+  ];
+
+  const adjustImages = [
+    '/public/images/carousel/adjust1.png',
+    '/public/images/carousel/adjust2.png',
+    '/public/images/carousel/adjust3.png'];
+  const repairImages = [
+    '/public/images/carousel/repair1.png',
+    '/public/images/carousel/repair2.png',
+    '/public/images/carousel/repair3.png'];
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const toggleMenu = () => setMenuOpen(!menuOpen);
-  const closeMenu = () => setMenuOpen(false);
   const [showHeader, setShowHeader] = useState(true);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [selectedType, setSelectedType] = useState('adjust');
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [currentTeamIndex, setCurrentTeamIndex] = useState(0);
 
-  useEffect(() => {
-    let timer = null;
-    const handleScroll = () => {
-      setShowHeader(false);
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => {
-        setShowHeader(true);
-      }, 300);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const images = selectedType === 'adjust' ? adjustImages : repairImages;
 
   const section1ContentRef = useRef(null);
   const section1BtnRef = useRef(null);
@@ -59,8 +80,33 @@ const App = () => {
   const [greenVisible, setGreenVisible] = useState(false);
   const [teamTopVisible, setTeamTopVisible] = useState(false);
   const [teamBottomVisible, setTeamBottomVisible] = useState(false);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % 3);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [selectedType]);
+
+  useEffect(() => {
+    let timer = null;
+    const handleScroll = () => {
+      setShowHeader(false);
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        setShowHeader(true);
+      }, 300);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   useAnimateOnScroll(section1ContentRef, setSection1Visible);
   useAnimateOnScroll(section1BtnRef, setSection1BtnVisible);
@@ -83,6 +129,14 @@ const App = () => {
       setLoading(false);
     }
   };
+
+  const scrollTo = (id) => {
+    const section = document.getElementById(id);
+    if (section) {
+      section.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <div className="main-container no-border">
       <div className={`header ${showHeader ? 'show' : 'hide'}`}>
@@ -93,20 +147,27 @@ const App = () => {
 
       {menuOpen && (
         <div className="mobile-menu">
-          <Link to="/" onClick={closeMenu}>首頁</Link>
-          <Link to="/adjust" onClick={closeMenu}>圖片調整</Link>
-          <Link to="/repair" onClick={closeMenu}>圖片修復</Link>
-          <Link to="/history" onClick={closeMenu}>歷史圖片</Link>
+          <Link to="/" onClick={() => setMenuOpen(false)}>首頁</Link>
+          <Link to="/adjust" onClick={() => setMenuOpen(false)}>圖片調整</Link>
+          <Link to="/repair" onClick={() => setMenuOpen(false)}>圖片修復</Link>
+          <Link to="/history" onClick={() => setMenuOpen(false)}>歷史圖片</Link>
         </div>
       )}
 
-      <section id="section1" className="section section1">
-        <div className="section1-main">
-          <div className={`section1-content animated-slide ${section1Visible ? 'in' : 'out'}`} ref={section1ContentRef}>
-            <h1>智能影像處理系統</h1>
-            <p>影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化</p>
-          </div>
-          <div className={`section1-buttons animated-slide-right ${section1BtnVisible ? 'in' : 'out'}`} ref={section1BtnRef}>
+      <section id="section1" className="hero-carousel">
+        {[1, 2, 3, 4, 5].map((num, idx) => (
+          <div
+            key={idx}
+            className={`slide ${idx === currentSlide ? 'active' : ''}`}
+            style={{
+              backgroundImage: `url(/public/images/carouselImg/banner${num}.png)`
+            }}
+          />
+        ))}
+        <div className="hero-overlay">
+          <h1>智能影像處理系統</h1>
+          <p>我們提供最佳的影像優化與修復服務</p>
+          <div>
             <button onClick={() => handleLogin("google")} disabled={loading}>
               {user ? `👋 歡迎 ${user.displayName}` : loading ? "Google 登入中..." : "使用 Google 登入"}
             </button>
@@ -118,50 +179,77 @@ const App = () => {
         </div>
       </section>
 
-      
-
-      <section id="section2" className="section section2">
-        <div className={`card red animated-slide ${redVisible ? 'in' : 'out'}`} ref={redCardRef}>
+      <section id="section2" className="section2">
+        <div className="feature-card">
           <h3>圖片調整</h3>
-          <p>影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化
-            <span className="link-text" onClick={() => navigate('/adjust')}>點擊前往</span>
-          </p>
+          <p>提供亮度、對比、色調...等手動參數調整，也有AI自動調整及去背功能，讓圖片更加完美。</p>
+          <span className="learn-more" onClick={() => navigate('/adjust')}>LEARN MORE</span>
         </div>
-        <div className={`card blue animated-slide-right ${blueVisible ? 'in' : 'out'}`} ref={blueCardRef}>
+        <div className="feature-card">
           <h3>圖片修復</h3>
-          <p>影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化
-            <span className="link-text" onClick={() => navigate('/repair')}>點擊前往</span>
-          </p>
+          <p>支援殘缺修補、模糊處理、褪色修復等功能，重現原始影像風貌。</p>
+          <span className="learn-more" onClick={() => navigate('/repair')}>LEARN MORE</span>
         </div>
-        <div className={`card green animated-slide ${greenVisible ? 'in' : 'out'}`} ref={greenCardRef}>
+        <div className="feature-card">
           <h3>歷史圖片</h3>
-          <p>影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化影像優化
-            <span className="link-text" onClick={() => navigate('/history')}>點擊前往</span>
-          </p>
+          <p>瀏覽並回顧過往上傳與修圖紀錄，追蹤處理歷程。</p>
+          <span className="learn-more" onClick={() => navigate('/history')}>LEARN MORE</span>
+        </div>
+
+        <div className="work-gallery">
+          <h2 className="gallery-title">成果作品</h2>
+          <div className="carousel-menu">
+            <div
+              className={selectedType === 'adjust' ? 'active' : ''}
+              onClick={() => {
+                setSelectedType('adjust');
+                setCurrentSlide(0);
+              }}
+            >圖片調整</div>
+            <div
+              className={selectedType === 'repair' ? 'active' : ''}
+              onClick={() => {
+                setSelectedType('repair');
+                setCurrentSlide(0);
+              }}
+            >圖片修復</div>
+          </div>
+          <div className="slider-wrapper">
+            <div className="slider-track" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
+              {images.map((img, idx) => (
+                <img key={idx} src={img} alt={`slide-${idx}`} />
+              ))}
+            </div>
+            <div className="dots">
+              {images.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`dot ${currentSlide === idx ? 'active' : ''}`}
+                  onClick={() => setCurrentSlide(idx)}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
       <section id="section3" className="section section3">
         <h2>關於我們</h2>
-        <div className="team-grid-wrapper">
-          <div className={`team-grid-row animated-slide-top ${teamTopVisible ? 'in' : 'out'}`} ref={teamTopRef}>
-            {["陳振洲", "林品君"].map((name, index) => (
-              <div key={index} className="team-card">
-                <h3>{name}</h3>
-                <ul>{Array(6).fill('條列').map((text, idx) => <li key={idx}>{text}</li>)}</ul>
-                <img src="/images/chen.jpg" alt=".img" />
-              </div>
-            ))}
+        <div className="team-carousel-container">
+          <button className="carousel-arrow left" onClick={() => setCurrentTeamIndex((prev) => (prev - 1 + teamData.length) % teamData.length)}>❮</button>
+          <div className="team-carousel">
+            {teamData
+              .slice(currentTeamIndex, currentTeamIndex + 3)
+              .concat(teamData.slice(0, Math.max(0, currentTeamIndex + 3 - teamData.length)))
+              .map((member, index) => (
+                <div className="team-card" key={index}>
+                  <img src={member.img} alt={member.name} />
+                  <h3>{member.name}</h3>
+                  <ul>{member.details.map((d, i) => <li key={i}>{d}</li>)}</ul>
+                </div>
+              ))}
           </div>
-          <div className={`team-grid-row animated-slide-bottom ${teamBottomVisible ? 'in' : 'out'}`} ref={teamBottomRef}>
-            {["卓晏霆", "郭旻憲", "葉鎮宇"].map((name, index) => (
-              <div key={index} className="team-card">
-                <h3>{name}</h3>
-                <ul>{Array(6).fill('條列').map((text, idx) => <li key={idx}>{text}</li>)}</ul>
-                <img src="/images/kuo.jpg" alt=".img" />
-              </div>
-            ))}
-          </div>
+          <button className="carousel-arrow right" onClick={() => setCurrentTeamIndex((prev) => (prev + 1) % teamData.length)}>❯</button>
         </div>
       </section>
     </div>
