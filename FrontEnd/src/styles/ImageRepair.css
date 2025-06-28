@@ -1,52 +1,93 @@
-.repair-container {
-  position: relative;
-  min-height: 100vh;
-  background-color: #FAC5DE;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  padding-top: 60px; /* 保留空間給 Header */
 
+.sidebar-extended {
+  position: fixed;
+  top: var(--header-height);
+  left: 0;
+  bottom: 0;
+  display: flex;
+  background-color: #1f1f1f;
+  color: white;
+  z-index: 900;
+  /* 別再用 height:100vh 或 overflow:hidden */
+}
+/* 左右寬度由這兩個 class 決定 */
+.sidebar-extended.without-right { width: 220px; }
+.sidebar-extended.with-right    { width: 550px; }
+
+/*── 左側欄內部 ──*/
+.sidebar-left {
+  width: 220px;
+  padding: 20px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-/* 帳號圓圈 */
-.account-badge {
+/* 移除原本 margin-top:50px，避免空白 */
+.sidebar-section {
+  margin-top: 0 !important;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* 分隔線 */
+.vertical-divider {
+  width: 1px;
+  background-color: #888;
+}
+
+/* 右側設定面板 */
+.sidebar-right {
+  flex: 1;
+  padding: 20px;
+  background-color: #262626;
+  overflow-y: auto;   /* 只有這層捲動 */
+  box-sizing: border-box;
+  /* 同樣移除任何 margin-top 或 max-height */
+}
+
+/*── 4. 主內容區 （圖片＋預覽）──*/
+.repair-content-wrapper {
   position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: #ffcc00;
-  color: #333;
-  font-weight: bold;
-  border-radius: 50%;
-  width: 60px;
-  height: 60px;
+  top: var(--header-height); /* 用變數保持一致 */
+  bottom: 0;
+  width: 100%;
   display: flex;
-  align-items: center;
   justify-content: center;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.2);
+  align-items: flex-start;   /* ← 這裡改成 flex-start 避免內容被撐開 */
+  overflow: auto;
+  padding: 20px;
+  box-sizing: border-box;
 }
+/* 左邊預留空間給 Sidebar */
+.repair-content-wrapper.with-sidebar    { left: 270px; }
+.repair-content-wrapper.without-sidebar { left: 90px; }
 
-/* 中央內容區 */
+/*── 5. 內容排版──*/
 .repair-content {
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-top: 30px;
 }
 
-/* 圖片上傳與預覽排列 */
 .image-box-wrapper {
   display: flex;
-  gap: 30px;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
   justify-content: center;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  align-items: stretch;
 }
 
 .image-box {
   display: flex;
   flex-direction: column;
+  flex: 1;
   align-items: center;
+  height: 100%;
 }
 
 .image-box .label {
@@ -55,17 +96,17 @@
 }
 
 .upload-box {
-  width: 300px;
-  height: 300px;
+  flex: 1;
+  width: 100%;
+  height: 100%;
   border: 2px dashed #aaa;
   background-color: #fff;
+  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 18px;
   color: #555;
-  margin: 10px 0;
-  border-radius: 10px;
 }
 
 .preview-image {
@@ -74,42 +115,10 @@
   border-radius: 6px;
 }
 
-/* 四個按鈕區 */
-.button-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  justify-content: center;
-}
-
-.repair-btn {
-  padding: 10px 20px;
-  background-color: #6D6AF7;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.repair-btn:hover {
-  background-color: #357ab7;
-}
-
 /* RWD 支援 */
 @media (max-width: 600px) {
   .upload-box {
     width: 90%;
-    height: 200px;
-  }
-
-  .repair-btn {
-    width: 100%;
-  }
-
-  .button-group {
-    flex-direction: column;
-    width: 100%;
-    align-items: center;
+    height: 90%;
   }
 }

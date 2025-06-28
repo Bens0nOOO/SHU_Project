@@ -21,27 +21,27 @@ const App = () => {
     {
       name: "陳振洲",
       img: "/images/teamPeople/chen.jpg",
-      details: ["功能設計", "API整合", "影像上傳", "圖片切換", "修復功能", "專案負責人"]
+      details: ["功能設計", "網頁前端處理", "專案負責人"]
     },
     {
       name: "林品君",
       img: "/images/teamPeople/lin.jpg",
-      details: ["圖片調整", "網頁設計", "Firebase登入", "圖片輪播", "功能介紹", "CSS設計"]
+      details: ["機器學習", "資料庫架設"]
     },
     {
       name: "卓晏霆",
       img: "/images/teamPeople/zhou.png",
-      details: ["資料庫設計", "後端建構", "使用者管理", "登入驗證", "API維護", "資料分析"]
+      details: ["機器學習、功能確認"]
     },
     {
       name: "郭旻憲",
       img: "/images/teamPeople/kuo.jpg",
-      details: ["前端整合", "動畫效果", "畫面對齊", "元件拆分", "網頁測試", "圖片美化"]
+      details: ["機器學習","網頁後端處理", "網頁測試"]
     },
     {
       name: "葉鎮宇",
       img: "/images/teamPeople/yeh.jpg",
-      details: ["圖片儲存", "AI模型研究", "修復展示", "模型推理", "修補預覽", "成效評估"]
+      details: ["網頁後端處理", "網頁測試",  "資料庫架設"]
     }
   ];
 
@@ -183,7 +183,7 @@ const App = () => {
         <div className="feature-card">
           <h3>圖片調整</h3>
           <p>提供亮度、對比、色調...等手動參數調整，也有AI自動調整及去背功能，讓圖片更加完美。</p>
-          <span className="learn-more" onClick={() => navigate('/adjust')}>LEARN MORE</span>
+          <span className="learn-more" onClick={() => navigate('/repair')}>LEARN MORE</span>
         </div>
         <div className="feature-card">
           <h3>圖片修復</h3>
