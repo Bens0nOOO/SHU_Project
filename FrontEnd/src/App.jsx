@@ -46,9 +46,9 @@ const App = () => {
   ];
 
   const adjustImages = [
-    '/public/images/carousel/adjust1.png',
-    '/public/images/carousel/adjust2.png',
-    '/public/images/carousel/adjust3.png'];
+    '/images/carousel/adjust1.png',
+    '/images/carousel/adjust2.png',
+    '/images/carousel/adjust3.png'];
   const repairImages = [
     '/public/images/carousel/repair1.png',
     '/public/images/carousel/repair2.png',

@@ -7,6 +7,7 @@ export default function HistoryImage() {
   const [year, setYear] = useState("");
   const [month, setMonth] = useState("");
   const [day, setDay] = useState("");
+  const [groupedImages, setGroupedImages] = useState([]);
 
   const groupImagesByDate = (images) => {
     const grouped = {};
@@ -17,7 +18,7 @@ export default function HistoryImage() {
         year: "numeric",
         month: "long",
         day: "numeric",
-        weekday: "short", // 顯示週幾
+        weekday: "short",
       });
 
       if (!grouped[dateKey]) {
@@ -26,9 +27,8 @@ export default function HistoryImage() {
       grouped[dateKey].push(img);
     });
 
-    // 回傳排序後的物件陣列 [{ date: '7月2日 週三', images: [...] }, ...]
     return Object.entries(grouped)
-      .sort((a, b) => new Date(b[1][0].uploadTime) - new Date(a[1][0].uploadTime)) // 依時間降冪
+      .sort((a, b) => new Date(b[1][0].uploadTime) - new Date(a[1][0].uploadTime))
       .map(([date, imgs]) => ({ date, images: imgs }));
   };
 
@@ -67,7 +67,7 @@ export default function HistoryImage() {
       const text = await res.text();
       if (res.ok) {
         alert("✅ 圖片刪除成功");
-        fetchImages(); // 重新載入
+        fetchImages();
       } else {
         alert("❌ 刪除失敗：" + text);
       }
@@ -105,13 +105,12 @@ export default function HistoryImage() {
     const apiURL = `http://localhost:8080/download?url=${encodeURIComponent(url)}&filename=${encodeURIComponent(filename)}`;
     const a = document.createElement("a");
     a.href = apiURL;
-    a.setAttribute("download", filename); // optional
+    a.setAttribute("download", filename);
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
   };
 
-  const [groupedImages, setGroupedImages] = useState([]);
   useEffect(() => {
     fetchImages();
   }, []);
@@ -121,7 +120,6 @@ export default function HistoryImage() {
       <Header />
       <h1>歷史圖片頁面</h1>
 
-      {/* 🔍 查詢條件區塊 */}
       <div className="date-filter" style={{ marginBottom: "20px", paddingLeft: "20px" }}>
         <input
           type="number"
@@ -148,54 +146,31 @@ export default function HistoryImage() {
         <button onClick={fetchImages} style={{ marginLeft: "10px" }}>🔄 顯示全部</button>
       </div>
 
-      {/* 圖片顯示區 */}
-      <div className="history-images-grid">
-        {groupedImages.map((group, idx) => (
-          <div key={idx} className="history-group-wrapper">
-            <div className="history-date-header">
-              <h3 style={{ marginLeft: "20px", marginTop: "30px", color: "#333" }}>
-                📅 {group.date}
-              </h3>
-            </div>
+      {/* 每個日期一區塊 */}
+      {groupedImages.map((group, idx) => (
+        <div key={idx} className="history-group-wrapper">
+          <div className="history-date-header">
+            <h3 style={{ marginLeft: "20px", marginTop: "30px", color: "#333" }}>
+              📅 {group.date}
+            </h3>
+          </div>
+
+          <div className="history-date-image-row">
             {group.images.map((img, i) => (
-              <div key={i} className="history-image-item" style={{ paddingLeft: "20px" }}>
-                <img src={img.pictureURL} alt={img.filename} style={{ objectFit: "cover", borderRadius: "4px" }} />
+              <div key={i} className="history-image-item">
+                <img src={img.pictureURL} alt={img.filename} />
                 <p style={{ fontSize: "0.8rem", color: "#999" }}>🕒 {img.uploadTime}</p>
-                <button
-                  onClick={() => forceDownload(img.pictureURL, img.filename)}
-                  className="download-btn"
-                  style={{
-                    marginTop: "6px",
-                    backgroundColor: "#3498db",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    padding: "6px 12px",
-                    cursor: "pointer",
-                  }}
-                >
+                <button onClick={() => forceDownload(img.pictureURL, img.filename)} className="download-btn">
                   ⬇️ 下載
                 </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(img.filename)}
-                  style={{
-                    marginTop: "10px",
-                    padding: "6px 12px",
-                    backgroundColor: "#e74c3c",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                  }}
-                >
+                <button onClick={() => handleDelete(img.filename)} className="delete-btn">
                   🗑 刪除
                 </button>
               </div>
             ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 }
