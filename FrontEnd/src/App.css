@@ -195,7 +195,7 @@ body, html {
   background-color: #8ccac6;
   border-radius: 16px;
   width: 22.5%;
-  height: 40vh;
+  height: 50vh;
   text-align: left;
   box-shadow: 0 6px 16px rgba(0,0,0,0.1);
   transition: transform .3s ease, box-shadow .3s ease;
@@ -210,7 +210,7 @@ body, html {
 .feature-combined-card {
   display: flex;
   width: 45%;
-  height: 40vh;
+  height: 50vh;
   background-color: #8ccac6;
   border-radius: 16px;
   box-shadow: 0 6px 16px rgba(0,0,0,0.1);
@@ -235,7 +235,7 @@ body, html {
   justify-content: center;
   align-items: flex-start;
   gap: 10rem;
-  max-width: 1200px;
+  max-width: 100%;
   margin: 0 auto;
 }
 .feature-combined-card .subcard h3,
@@ -509,7 +509,8 @@ body, html {
 
   /* 11.3 Section2 直排 & 長卡滿寬、虛線改底部 */
   .section2 .feature-row {
-    flex-direction: column; align-items: center;
+    flex-direction: column; 
+    align-items: center;
   }
   .feature-combined-card {
     flex-direction: column; 
