@@ -1,11 +1,35 @@
 import React, { useState, useRef } from "react";
 import "../styles/Sidebar.css";
 import { Link } from "react-router-dom";
+import { FaSlidersH, FaTools, FaHome, FaHistory } from "react-icons/fa";
+import { DiAptana } from "react-icons/di";
 
+// 濾鏡選項
+const filterOptions = [
+  { name: "original", label: "Original" },
+  { name: "vintage", label: "Vintage" },
+  { name: "lomo", label: "Lomo" },
+  { name: "clarity", label: "Clarity" },
+  { name: "sinCity", label: "Sin City" },
+  { name: "sunrise", label: "Sunrise" },
+  { name: "crossProcess", label: "Cross Process" },
+  { name: "orangePeel", label: "Orange Peel" },
+  { name: "love", label: "Love" },
+  { name: "grungy", label: "Grungy" },
+  { name: "jarques", label: "Jarques" },
+  { name: "pinhole", label: "Pinhole" },
+  { name: "oldBoot", label: "Old Boot" },
+  { name: "glowingSun", label: "Glowing Sun" },
+  { name: "hazyDays", label: "Hazy Days" },
+  { name: "herMajesty", label: "Her Majesty" },
+  { name: "nostalgia", label: "Nostalgia" },
+  { name: "hemingway", label: "Hemingway" },
+  { name: "concentrate", label: "Concentrate" },
+];
 
-export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange }) {
+export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange, onApplyFilter }) {
   const scrollRef = useRef(null);
-  const [adjustments, setAdjustments] = useState({});
+
   const defaultSliderValues = {
     藍色色調: 0, 色溫: 0, 飽和度: 0, 色調: 0, 鮮明度: 0,
     亮度: 0, 對比: 0, 白點: 0, HDR效果: 0, 陰影: 0, 黑點: 0,
@@ -21,18 +45,22 @@ export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange 
   const [sliderValues, setSliderValues] = useState(defaultSliderValues);
   const [removeBg, setRemoveBg] = useState(null);
 
-
   const toggleMode = (mode) => {
-    if (onToggleMode) {
-      onToggleMode(mode);
-    }
+    if (onToggleMode) onToggleMode(mode);
   };
 
-  const handleSliderChange = (key, value) => {
-    const updated = { ...sliderValues, [key]: parseInt(value) };
-    setSliderValues({ ...sliderValues, [key]: parseInt(value) });
-    if (onAdjustmentsChange) onAdjustmentsChange(updated);
+  const throttleRef = useRef(0);
 
+  const handleSliderChange = (key, value) => {
+    const intVal = parseInt(value);
+    const updated = { ...sliderValues, [key]: intVal };
+    setSliderValues(updated);
+
+    const now = performance.now();
+    if (now - throttleRef.current > 200) {
+      throttleRef.current = now;
+      onAdjustmentsChange && onAdjustmentsChange(updated);
+    }
   };
 
   const handleInputChange = (key, e) => {
@@ -40,7 +68,7 @@ export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange 
     if (isNaN(val)) val = 0;
     val = Math.min(100, Math.max(-100, val));
     const updated = { ...sliderValues, [key]: val };
-    setSliderValues({ ...sliderValues, [key]: val });
+    setSliderValues(updated);
     if (onAdjustmentsChange) onAdjustmentsChange(updated);
   };
 
@@ -58,25 +86,17 @@ export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange 
   return (
     <div className={`sidebar-extended ${activeMode ? "with-right" : "without-right"}`}>
       <div className="sidebar-left">
-        {/* <div className="sidebar-section account-section">
-          <div className="account-display">帳號</div>
-        </div> */}
-
         <hr />
-
         <div className="sidebar-section feature-section">
           <h4 className="section-title">功能</h4>
-          <button
-            className={`sidebar-btn ${activeMode === "adjust" ? "active" : ""}`}
-            onClick={() => toggleMode("adjust")}
-          >
-            圖片調整
+          <button className={`sidebar-btn ${activeMode === "adjust" ? "active" : ""}`} onClick={() => toggleMode("adjust")}>
+            <FaSlidersH className="sidebar-icon" /> 圖片調整
           </button>
-          <button
-            className={`sidebar-btn ${activeMode === "repair" ? "active" : ""}`}
-            onClick={() => toggleMode("repair")}
-          >
-            圖片修復
+          <button className={`sidebar-btn ${activeMode === "repair" ? "active" : ""}`} onClick={() => toggleMode("repair")}>
+            <FaTools className="sidebar-icon" /> 圖片修復
+          </button>
+          <button className={`sidebar-btn ${activeMode === "style" ? "active" : ""}`} onClick={() => toggleMode("style")}>
+            🎨 風格轉換
           </button>
         </div>
 
@@ -84,17 +104,20 @@ export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange 
 
         <div className="sidebar-section page-section">
           <h4 className="section-title">其他頁面</h4>
-
-          <Link className="sidebar-link" to={"/"}>首頁</Link>
-          <Link className="sidebar-link" to={"/history"}>歷史圖片</Link>
-          <Link className="sidebar-link" to={"/"}>設定</Link>
+          <Link className="sidebar-link" to={"/"}>
+            <FaHome className="sidebar-icon" /> 首頁
+          </Link>
+          <Link className="sidebar-link" to={"/history"}>
+            <FaHistory className="sidebar-icon" /> 歷史圖片
+          </Link>
+          <Link className="sidebar-link" to={"/"}>
+            <DiAptana className="sidebar-icon" /> 設定
+          </Link>
         </div>
       </div>
 
-      {/* 分隔線（僅當面板開啟時顯示） */}
       <div className={`vertical-divider ${!activeMode ? "hidden" : ""}`} />
 
-      {/* 右側面板固定結構，用 display 控制顯示 */}
       <div className={`sidebar-right ${!activeMode ? "hidden" : ""}`} ref={scrollRef}>
         {activeMode === "adjust" && (
           <>
@@ -186,6 +209,24 @@ export default function Sidebar({ activeMode, onToggleMode, onAdjustmentsChange 
                   <button className="repair-action">立即修復</button>
                 </div>
               ))}
+            </div>
+          </>
+        )}
+
+        {activeMode === "style" && (
+          <>
+            <h4 className="section-title">風格濾鏡</h4>
+            <div className="filter-options">
+              {filterOptions.map(({ name, label }) => (
+                <button key={name} className="filter-btn" onClick={() => onApplyFilter && onApplyFilter(name)}>
+                  {label}
+                </button>
+              ))}
+            </div>
+            <div className="wb-buttons">
+              <button className="cancel-btn" onClick={() => onApplyFilter && onApplyFilter("original")}>
+                重置濾鏡
+              </button>
             </div>
           </>
         )}

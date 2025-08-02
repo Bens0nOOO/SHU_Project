@@ -7,15 +7,14 @@ import { getAuth, GoogleAuthProvider, FacebookAuthProvider  } from "firebase/aut
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-    // test
-    apiKey: "AIzaSyAfDrWEa05qTxyqwdlpQi4Nod7hqbb2HBc",
-    authDomain: "test-2ea39.firebaseapp.com",
-    projectId: "test-2ea39",
-    storageBucket: "test-2ea39.firebasestorage.app",
-    messagingSenderId: "37136238313",
-    appId: "1:37136238313:web:30b1687248639e532c1278",
-    measurementId: "G-6NG0Z3H33F",
-};
+    apiKey: "AIzaSyBeEm6spVannWRmf2l_MN6vquHGdi1oIYM",
+    authDomain: "shutestdemo0504.firebaseapp.com",
+    projectId: "shutestdemo0504",
+    storageBucket: "shutestdemo0504.firebasestorage.app",
+    messagingSenderId: "746370551515",
+    appId: "1:746370551515:web:a80a919a7440b0296006fe",
+    measurementId: "G-Z7SNG09E7R"
+  };
 
 // ✅ 初始化 Firebase 應用
 const app = initializeApp(firebaseConfig);

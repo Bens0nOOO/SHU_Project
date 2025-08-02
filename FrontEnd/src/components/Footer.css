@@ -1,0 +1,10 @@
+/* src/components/Footer.css */
+.app-footer {
+    background-color: #000;                    /* 黑底 */
+    color: #fff;                               /* 白字 */
+    text-align: center;
+    padding: 20px 0;                           /* 上下內距加大 */
+    font-size: 1.2rem;                         /* 字體放大 */
+    font-family: "Microsoft JhengHei", "微軟正黑體", sans-serif;  /* 微軟正黑體 */
+  }
+  

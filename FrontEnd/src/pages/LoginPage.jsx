@@ -1,37 +1,70 @@
-import React from 'react';
-import LoginForm from '../components/LoginForm';
-import '../styles/login.css';
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import './AuthPage.css';
 
-const LoginPage = () => {
-  const handleLoginSubmit = async ({ email, password }) => {
-    try {
-      const auth = getAuth();
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      const idToken = await user.getIdToken();
+export default function LoginPage() {
+  const navigate = useNavigate();
+  const [email, setEmail]   = useState('');
+  const [pw, setPw]         = useState('');
+  const [slide, setSlide]   = useState(0);
 
-      await axios.post('http://localhost:8080/auth/login', {}, {
-        headers: {
-          Authorization: `Bearer ${idToken}`,
-        },
-        withCredentials: true,
-      });
+  const images = [
+    '/public/images/carouselImg/banner4.png',
+    '/public/images/carouselImg/banner5.png',
+    '/public/images/carouselImg/banner6.png',
+  ];
 
-      alert(`✅ 登入成功！電子郵件: ${user.email}`);
-    } catch (error) {
-      console.error('登入失敗:', error);
-      alert('❌ 登入失敗，請檢查帳號或密碼');
-    }
+  // 背景輪播
+  useEffect(() => {
+    const iv = setInterval(() => {
+      setSlide(s => (s + 1) % images.length);
+    }, 5000);
+    return () => clearInterval(iv);
+  }, []);
+
+  // 動態更新 CSS 變數
+  useEffect(() => {
+    document
+      .querySelector('.auth-page')
+      ?.style.setProperty('--bg-url', `url(${images[slide]})`);
+  }, [slide]);
+
+  const handleSubmit = e => {
+    e.preventDefault();
+    // TODO: 呼叫登入 API
+    console.log({ email, pw });
   };
 
   return (
-    <div className="login-page">
-      <h2>登入頁面</h2>
-      <LoginForm onSubmit={handleLoginSubmit} />
+    <div className="auth-page" style={{ '--bg-url': `url(${images[0]})` }}>
+      <form className="auth-form" onSubmit={handleSubmit}>
+        <h2>登入</h2>
+        <label>
+          電子郵件
+          <input
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          密碼
+          <input
+            type="password"
+            value={pw}
+            onChange={e => setPw(e.target.value)}
+            required
+          />
+        </label>
+        <button type="submit" className="auth-btn auth-btn--primary">
+          登入 →
+        </button>
+        <div className="auth-footer-links">
+          <Link to="/register">註冊帳號</Link>
+          <Link to="/forgot">忘記密碼？</Link>
+        </div>
+      </form>
     </div>
   );
-};
-
-export default LoginPage;
+}

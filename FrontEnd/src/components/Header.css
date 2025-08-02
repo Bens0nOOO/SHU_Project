@@ -17,7 +17,7 @@
 .header-title {
   font-size: 30px;
   font-weight: bold;
-  color: #00d4ff;
+  color: #8ccac6;
 }
 
 .header-page {
@@ -89,4 +89,14 @@
 
 .dropdown-menu div:hover {
   background-color: #444;
+}
+
+/* 讓標題游標變成可點擊 */
+.header-title-link {
+  text-decoration: none;  /* 去掉連結底線 */
+}
+
+.header-title {
+  cursor: pointer;
+  /* 其他原有樣式保持不動 */
 }

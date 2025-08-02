@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import "../styles/ImageAdjust.css";
-import WhiteBalanceGrid from "../components/WhiteBalanceGrid";
 import ImageUploader from "../components/ImageUploader";
 import Header from "../components/Header";
 

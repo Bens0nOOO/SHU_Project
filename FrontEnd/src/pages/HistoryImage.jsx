@@ -1,12 +1,12 @@
 import Header from "../components/Header";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import "../styles/HistoryImage.css";
 
 export default function HistoryImage() {
-  const [images, setImages] = useState([]);
-  const [year, setYear] = useState("");
-  const [month, setMonth] = useState("");
-  const [day, setDay] = useState("");
+  // const [images, setImages] = useState([]);
+  const [year, setYear] = useState("2025");
+  const [month, setMonth] = useState("7");
+  const [day, setDay] = useState("20");
   const [groupedImages, setGroupedImages] = useState([]);
 
   const groupImagesByDate = (images) => {
@@ -113,7 +113,7 @@ export default function HistoryImage() {
 
   useEffect(() => {
     fetchImages();
-  }, []);
+  });
 
   return (
     <div className="History-Image-container">

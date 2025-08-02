@@ -1,4 +1,3 @@
-// ImageRepair.jsx
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/ImageRepair.css";
 import ImageUploader from "../components/ImageUploader";
@@ -26,8 +25,25 @@ export default function ImageRepair() {
     document.body.removeChild(link);
   };
 
+  // ✅ CamanJS 濾鏡應用
+  const applyFilter = (filterName) => {
+    const img = document.getElementById("caman-image");
+    if (!img || !imageUrl) return;
+
+    Caman(img, function () {
+      this.revert(false); // 重設為原圖但保留狀態
+      if (filterName === "original") {
+        this.revert(true).render();
+      } else if (typeof this[filterName] === "function") {
+        this[filterName]().render();
+      }
+    });
+  };
+
+  // ✅ 圖片調整邏輯（brightness, contrast, etc.）
   useEffect(() => {
-    if (!imageUrl) return;
+    if (!imageUrl || activeMode !== "adjust") return;
+
     const img = new Image();
     img.crossOrigin = "anonymous";
     img.src = imageUrl;
@@ -60,38 +76,23 @@ export default function ImageRepair() {
         let g = data[i + 1] / 255;
         let b = data[i + 2] / 255;
 
-        // 對比與亮度
         [r, g, b] = [r, g, b].map(c => ((c - 0.5) * (contrast + 1) + 0.5 + brightness));
-
-        // 色溫與藍色色調
         r += temperature * 0.1;
         b -= temperature * 0.1;
         b += blueTone * 0.2;
 
-        // 飽和度
         const avg = (r + g + b) / 3;
         r = avg + (r - avg) * (1 + saturation);
         g = avg + (g - avg) * (1 + saturation);
         b = avg + (b - avg) * (1 + saturation);
 
-        // 曝影與白點
         [r, g, b] = [r, g, b].map(c => c + exposure + whitePoint * 0.2);
-
-        // 陰影與黑點
         [r, g, b] = [r, g, b].map(c => c - shadow * 0.2 - blackPoint * 0.2);
 
-        // 鮮明度 (vividness) 強調中間亮度
         const vividBoost = 1 + vividness * (0.5 - Math.abs(avg - 0.5));
-        r *= vividBoost;
-        g *= vividBoost;
-        b *= vividBoost;
-
-        // HDR 模擬（簡單加亮）
+        r *= vividBoost; g *= vividBoost; b *= vividBoost;
         [r, g, b] = [r, g, b].map(c => c + hdr * (1 - c));
 
-        // 降噪模擬為模糊（此處略過卷積處理）
-
-        // 限制範圍 0~255
         data[i] = Math.min(255, Math.max(0, r * 255));
         data[i + 1] = Math.min(255, Math.max(0, g * 255));
         data[i + 2] = Math.min(255, Math.max(0, b * 255));
@@ -99,7 +100,6 @@ export default function ImageRepair() {
 
       ctx.putImageData(imageData, 0, 0);
 
-      // 銳利化（簡易 kernel）
       if (sharpness > 0) {
         const kernel = [
           0, -sharpness, 0,
@@ -131,7 +131,7 @@ export default function ImageRepair() {
 
       setAdjustedUrl(canvas.toDataURL());
     };
-  }, [imageUrl, adjustments]);
+  }, [imageUrl, adjustments, activeMode]);
 
   return (
     <div className="repair-container">
@@ -147,6 +147,7 @@ export default function ImageRepair() {
         activeMode={activeMode}
         onToggleMode={handleToggleMode}
         onAdjustmentsChange={(newValues) => setAdjustments(newValues)}
+        onApplyFilter={applyFilter}
       />
       <canvas ref={canvasRef} style={{ display: "none" }} />
       <div className={`repair-content-wrapper ${activeMode ? "with-sidebar" : "without-sidebar"}`}>
@@ -159,8 +160,8 @@ export default function ImageRepair() {
             <div className="image-box">
               <h4 className="label">修復中:</h4>
               <div className="upload-box preview-box">
-                {adjustedUrl ? (
-                  <img src={adjustedUrl} alt="修復預覽" className="preview-image" />
+                {imageUrl ? (
+                  <img id="caman-image" src={imageUrl} alt="預覽圖" className="preview-image" />
                 ) : (
                   <p>尚未選擇圖片</p>
                 )}

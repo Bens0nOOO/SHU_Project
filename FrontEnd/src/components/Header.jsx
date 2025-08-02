@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import "./Header.css";
 
 export default function Header({ onActionClick }) {
@@ -22,7 +22,9 @@ export default function Header({ onActionClick }) {
 
   return (
     <header className="header-container">
-      <div className="header-title">智能影像處理系統</div>
+      <Link to="/" className="header-title-link">
+       <div className="header-title">智能影像處理系統</div>
+      </Link>
       <div className="header-page">{getPageName()}</div>
 
       <div className="header-actions">
